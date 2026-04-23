@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dev Log - 技术博客</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.363.0/dist/umd/lucide.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<title>菜鱼菜鱼菜的网站😄🙂😊</title>
+<link rel="preconnect" href="https://cdn.bootcdn.net">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@0.363.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 
 <style>
 :root{
@@ -54,22 +56,18 @@ mark{background:#fff3a0;color:#7a5c00;padding:0 2px;border-radius:2px}
 [data-tip]{position:relative}
 [data-tip]::after{
   content:attr(data-tip);
-  position:absolute;bottom:calc(100% + 6px);
+  position:absolute;top:calc(100% + 6px);
   background:var(--text);color:var(--bg);
   padding:4px 10px;border-radius:6px;
   font-size:11.5px;font-weight:500;white-space:nowrap;
   pointer-events:none;opacity:0;transition:all .15s var(--ease);
   z-index:1500;box-shadow:var(--shadow);
-}
-/* 默认向右偏移，避免超出左侧 */
-[data-tip]::after{
-  left:auto;
-  right:0;
-  transform:translateX(0) translateY(2px);
+  left:50%;transform:translateX(-50%) translateY(-4px);
+  max-width:calc(100vw - 16px);
 }
 [data-tip]:hover::after{
   opacity:1;
-  transform:translateX(0) translateY(0);
+  transform:translateX(-50%) translateY(0);
   transition-delay:.4s;
 }
 /* 左侧显示（用于页面左边的元素） */
@@ -79,15 +77,28 @@ mark{background:#fff3a0;color:#7a5c00;padding:0 2px;border-radius:2px}
   top:50%;
   bottom:auto;
   transform:translateY(-50%) translateX(0);
+  max-width:200px;
 }
 [data-tip-left]:hover::after{
   transform:translateY(-50%) translateX(0);
+}
+/* 导航按钮 tooltip 居中显示 */
+.nl button[data-tip]::after{
+  left:50%;
+  right:auto;
+  transform:translateX(-50%) translateY(-4px);
+}
+.nl button[data-tip]:hover::after{
+  transform:translateX(-50%) translateY(0);
 }
 /* 针对 nav-r 右侧按钮特殊处理，让 tooltip 向左对齐 */
 .nav-r [data-tip]::after{
   left:auto;
   right:0;
-  transform:translateX(0) translateY(2px);
+  transform:translateX(0) translateY(-4px);
+}
+.nav-r [data-tip]:hover::after{
+  transform:translateX(0) translateY(0);
 }
 
 #progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),#a78bfa);width:0%;z-index:999;transition:width .1s;box-shadow:0 0 8px var(--accent)}
@@ -126,9 +137,8 @@ body.visitor .admin-only{display:none!important}
 .cta-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 
 .wrap{max-width:920px;margin:0 auto;padding:0 24px}
-.pg{display:none;padding:32px 0 96px}.pg.on{display:block}
-@keyframes pg-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.pg.on{animation:pg-in .25s var(--ease)}
+.pg{display:none;padding:32px 0 96px;opacity:0}.pg.on{display:block;animation:pg-in .3s var(--ease) forwards}
+@keyframes pg-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
 .page-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
 .page-title{font-size:28px;font-weight:700;letter-spacing:-.02em;color:var(--text);line-height:1.2}
@@ -321,6 +331,35 @@ body.visitor #ci-form-wrap{display:none!important}
 .tr:hover{padding-left:6px}.tr:hover span:first-child{color:var(--text)}
 .tr span:first-child{color:var(--text2);display:flex;align-items:center;gap:8px}
 .tr span:last-child{color:var(--text4);font-family:var(--mono);font-size:12px;flex-shrink:0;margin-left:10px}
+
+/* 现代化分类页面 */
+.tags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tag-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;transition:all .2s var(--ease);cursor:pointer}
+.tag-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.tag-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tag-card-name{font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.tag-card-name::before{content:'#';color:var(--accent);font-family:var(--mono)}
+.tag-card-count{font-size:12px;color:var(--bg);background:var(--accent);padding:2px 10px;border-radius:99px;font-weight:600}
+.tag-card-posts{display:flex;flex-direction:column;gap:4px}
+.tag-card-post{font-size:13px;color:var(--text3);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;transition:all .15s var(--ease)}
+.tag-card-post:last-child{border:none}
+.tag-card-post:hover{color:var(--text);padding-left:4px}
+.tag-card-post::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--text4)}
+.tag-card-more{font-size:12px;color:var(--accent);margin-top:8px;text-align:center}
+
+/* 实验室页面 */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.lab-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;text-align:center;cursor:pointer;transition:all .2s var(--ease)}
+.lab-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.lab-icon{font-size:40px;margin-bottom:12px}
+.lab-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.lab-desc{font-size:12px;color:var(--text3)}
+#lab-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none}
+#lab-canvas.on{display:block;pointer-events:auto}
+.lab-close{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10000;background:var(--bg);border:1px solid var(--border);padding:10px 20px;border-radius:99px;font-size:13px;color:var(--text);box-shadow:var(--shadow-lg);cursor:pointer}
+.lab-close.on{display:block}
+.lab-close:hover{background:var(--bg-hover)}
+
 .series-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:640px){.series-list{grid-template-columns:1fr}}
 .series-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:all .2s var(--ease)}
@@ -353,6 +392,8 @@ body.visitor #ci-form-wrap{display:none!important}
 .block.focused{background:var(--accent-soft)}
 .block-handle{position:absolute;left:-44px;top:50%;transform:translateY(-50%);display:flex;gap:2px;opacity:0;transition:opacity .15s}
 .block:hover .block-handle,.block.focused .block-handle{opacity:1}
+.block-add-bottom{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;margin:8px 24px;border:2px dashed var(--border);border-radius:var(--r);color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s var(--ease)}
+.block-add-bottom:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
 .bh-btn{width:20px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px;color:var(--text4);cursor:grab;background:none}
 .bh-btn:hover{background:var(--bg3);color:var(--text2)}
 .bh-btn.drag-handle{cursor:grab}
@@ -546,18 +587,17 @@ body.immersive #immersive-exit{display:inline-flex}
 <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
 
 <nav><div class="ni">
-  <div class="logo"><span class="logo-dot"></span>dev.log</div>
+  <div class="logo"><span class="logo-dot"></span>cycyc</div>
   <div class="nl">
     <button class="on" onclick="goNav('home',this)" data-tip="技术文章"><i data-lucide="file-text" class="icon-sm"></i>技术</button>
     <button onclick="goNav('life',this)" class="admin-only life-nav" data-tip="生活打卡"><i data-lucide="coffee" class="icon-sm"></i>生活</button>
     <button onclick="goNav('tags',this)" data-tip="按标签浏览"><i data-lucide="hash" class="icon-sm"></i>分类</button>
     <button onclick="goNav('series',this)" data-tip="系列专栏"><i data-lucide="layers" class="icon-sm"></i>系列</button>
-    <button onclick="goNav('dash',this)" class="admin-only" data-tip="数据看板"><i data-lucide="bar-chart-3" class="icon-sm"></i>看板</button>
+    <button onclick="goNav('lab',this)" data-tip="实验性功能"><i data-lucide="flask-conical" class="icon-sm"></i>实验室</button>
     <button onclick="goNav('about',this)" data-tip="关于博主"><i data-lucide="user" class="icon-sm"></i>关于</button>
   </div>
   <div class="nav-r">
-    <button class="icon-btn" onclick="forceRefresh()" data-tip="强制刷新 (绕过缓存)"><i data-lucide="refresh-cw" class="icon-sm"></i></button>
-    <button class="icon-btn" onclick="clearAppCache()" data-tip="清除缓存并刷新"><i data-lucide="trash-2" class="icon-sm"></i></button>
+    <button class="icon-btn" onclick="forceRefresh()" data-tip="刷新页面(出现异常点一下)"><i data-lucide="refresh-cw" class="icon-sm"></i></button>
     <button class="cmd-btn" onclick="openCmd()" data-tip="搜索 & 命令面板"><i data-lucide="search" class="icon-sm"></i>搜索<span class="kbd" id="cmd-kbd">⌘K</span></button>
     <button class="cta-btn admin-only" onclick="goNav('write')" data-tip="开始写作"><i data-lucide="pencil" class="icon-sm"></i>写作<span class="kbd" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8)">N</span></button>
     <button class="icon-btn" id="mode-btn" onclick="toggleMode()" data-tip="切换访客预览模式" data-tip-left><i data-lucide="eye" class="icon-sm"></i></button>
@@ -583,17 +623,9 @@ body.immersive #immersive-exit{display:inline-flex}
 <div id="pg-life" class="pg">
   <div class="page-hd">
     <div><div class="page-title">生活碎片</div><div class="page-sub">旅行、阅读与日常的即时记录</div></div>
-    <button class="btn btn-primary" onclick="toggleCiForm()"><i data-lucide="plus" class="icon-sm"></i>打卡</button>
+    <button class="btn btn-primary admin-only" onclick="toggleCiForm()"><i data-lucide="plus" class="icon-sm"></i>打卡</button>
   </div>
-  <div class="life-header">
-    <div class="life-filters" id="life-filters">
-      <button class="lf-btn on" onclick="filterLife(null,this)">全部</button>
-      <button class="lf-btn" onclick="filterLife('travel',this)">🗺️ 旅行</button>
-      <button class="lf-btn" onclick="filterLife('book',this)">📖 读书</button>
-      <button class="lf-btn" onclick="filterLife('mood',this)">💭 心情</button>
-    </div>
-  </div>
-  <div id="ci-form-wrap" style="display:none">
+  <div id="ci-form-wrap" class="admin-only" style="display:none">
     <div class="checkin-form">
       <div class="cf-row">
         <select id="cf-type"><option value="travel">🗺️ 旅行</option><option value="book">📖 读书</option><option value="mood">💭 心情</option></select>
@@ -624,8 +656,36 @@ body.immersive #immersive-exit{display:inline-flex}
 </div>
 
 <div id="pg-tags" class="pg">
-  <div class="page-hd"><div><div class="page-title">标签分类</div><div class="page-sub">按主题浏览所有文章</div></div></div>
-  <div id="tlist"></div>
+  <div class="page-hd"><div><div class="page-title">分类</div><div class="page-sub">按主题浏览文章</div></div></div>
+  <div class="tags-grid" id="tags-grid"></div>
+</div>
+
+<div id="pg-lab" class="pg">
+  <div class="page-hd"><div><div class="page-title">实验室</div><div class="page-sub">探索炫酷的实验性功能</div></div></div>
+  <div class="lab-grid">
+    <div class="lab-card" onclick="startParticles()">
+      <div class="lab-icon">✨</div>
+      <div class="lab-title">粒子特效</div>
+      <div class="lab-desc">鼠标跟随粒子动画</div>
+    </div>
+    <div class="lab-card" onclick="startMatrix()">
+      <div class="lab-icon">🔢</div>
+      <div class="lab-title">矩阵雨</div>
+      <div class="lab-desc">黑客帝国风格动画</div>
+    </div>
+    <div class="lab-card" onclick="startFireworks()">
+      <div class="lab-icon">🎆</div>
+      <div class="lab-title">烟花绽放</div>
+      <div class="lab-desc">点击屏幕放烟花</div>
+    </div>
+    <div class="lab-card" onclick="startRipple()">
+      <div class="lab-icon">💧</div>
+      <div class="lab-title">水波纹</div>
+      <div class="lab-desc">点击产生涟漪效果</div>
+    </div>
+  </div>
+  <canvas id="lab-canvas"></canvas>
+  <button class="lab-close" onclick="stopLabEffect()">退出效果</button>
 </div>
 
 <div id="pg-series" class="pg">
@@ -657,6 +717,11 @@ body.immersive #immersive-exit{display:inline-flex}
       </div>
     </div>
     <div class="blocks" id="blocks-area"></div>
+    <div class="block-add-bottom" onclick="addBlockAtEnd()">
+      <i data-lucide="plus" class="icon-sm"></i>
+      <span>添加新块</span>
+      <span class="kbd" style="margin-left:6px">/</span>
+    </div>
     <div class="editor-footer">
       <div class="ef-status">
         <span id="wc">0 字</span>
@@ -677,7 +742,7 @@ body.immersive #immersive-exit{display:inline-flex}
   <div class="abn"><i data-lucide="user" class="icon-lg"></i>// hello</div>
   <div class="abb">你好！我是一名全栈开发者，热爱开源、算法与简洁的代码。这里有我的技术思考，也有生活的温度。</div>
   <div class="sl">技术栈</div>
-  <div class="sk"><span>TypeScript</span><span>Python</span><span>Rust</span><span>React</span><span>Node.js</span><span>PostgreSQL</span><span>Docker</span><span>Linux</span></div>
+  <div class="sk"><span>C++</span><span>Python</span><span>Go</span><span>Linux</span><span>Docker</span><span>PostgreSQL</span><span>Redis</span></div>
   <div class="sl">链接</div>
   <div class="lk">
     <div><i data-lucide="github" class="icon-sm"></i>github.com/devlog</div>
@@ -788,6 +853,11 @@ body.immersive #immersive-exit{display:inline-flex}
     window.redoEditor = window.redoEditor || function() { console.warn('redoEditor 延迟定义'); };
     window.openCmd = window.openCmd || function() { console.warn('openCmd 延迟定义'); };
     window.closeCmd = window.closeCmd || function() { console.warn('closeCmd 延迟定义'); };
+    window.startParticles = window.startParticles || function() { console.warn('startParticles 延迟定义'); };
+    window.startMatrix = window.startMatrix || function() { console.warn('startMatrix 延迟定义'); };
+    window.startFireworks = window.startFireworks || function() { console.warn('startFireworks 延迟定义'); };
+    window.startRipple = window.startRipple || function() { console.warn('startRipple 延迟定义'); };
+    window.stopLabEffect = window.stopLabEffect || function() { console.warn('stopLabEffect 延迟定义'); };
 })();
 // ==================== 补丁结束 ====================
 
@@ -798,39 +868,45 @@ function modMatch(e){return IS_MAC?e.metaKey:e.ctrlKey;}
 
 /* ═══ Default Data ═══ */
 var DEFAULT_POSTS=[
-  {id:1,date:"2025-04-15",tags:["Rust","系统编程"],draft:false,color:"#e74c3c",series:'s1',seriesOrder:1,pinned:true,title:"用 Rust 写一个简单的 HTTP 服务器",blocks:[
-    {type:'h2',content:'为什么要从零写？'},
-    {type:'p',content:'市面上有 Axum、Actix 等成熟框架，但自己手写一遍能让你真正理解 HTTP 协议与 Rust 所有权模型。'},
-    {type:'h2',content:'监听 TCP 连接'},
-    {type:'code',lang:'rust',content:'use std::net::TcpListener;\n\nfn main() {\n    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();\n    for stream in listener.incoming() {\n        handle_connection(stream.unwrap());\n    }\n}'},
-    {type:'h2',content:'并发数学'},
-    {type:'p',content:'若每秒处理 $r$ 个请求，平均响应时间 $t$ 秒：'},
-    {type:'math',content:'C = r \\times t'},
-    {type:'h2',content:'协议对比'},
-    {type:'table',rows:[['协议','连接类型','默认端口'],['HTTP/1.1','短连接','80'],['HTTP/2','多路复用','443'],['WebSocket','长连接','80/443']]},
-    {type:'h2',content:'架构流程'},
-    {type:'mermaid',content:'graph TD\n  A[客户端] -->|TCP| B[TcpListener]\n  B --> C[handle_connection]\n  C --> D[解析请求] --> E[构造响应]'},
+  {id:1,date:"2025-04-15",tags:["C++","系统编程"],draft:false,color:"#e74c3c",series:'s1',seriesOrder:1,pinned:true,title:"C++ 智能指针与内存管理最佳实践",blocks:[
+    {type:'h2',content:'为什么需要智能指针？'},
+    {type:'p',content:'裸指针容易导致内存泄漏、悬垂指针和重复释放。C++11 引入的智能指针通过 RAII 机制自动管理资源生命周期。'},
+    {type:'h2',content:'三种智能指针对比'},
+    {type:'table',rows:[['类型','所有权','使用场景'],['unique_ptr','独占','单一所有者'],['shared_ptr','共享','多处引用'],['weak_ptr','不拥有','打破循环引用']]},
+    {type:'h2',content:'代码示例'},
+    {type:'code',lang:'cpp',content:'#include <memory>\n\nclass Widget {\npublic:\n    Widget(int v) : value(v) {}\n    int value;\n};\n\nint main() {\n    // unique_ptr 独占所有权\n    auto p1 = std::make_unique<Widget>(42);\n    \n    // shared_ptr 引用计数\n    auto p2 = std::make_shared<Widget>(100);\n    auto p3 = p2; // 引用计数 = 2\n    \n    return 0;\n}'},
+    {type:'h2',content:'内存管理流程'},
+    {type:'mermaid',content:'graph TD\n  A[分配内存] --> B{选择智能指针}\n  B -->|独占| C[unique_ptr]\n  B -->|共享| D[shared_ptr]\n  C --> E[作用域结束自动释放]\n  D --> F[引用计数归零时释放]\n  F --> G{循环引用?}\n  G -->|是| H[使用 weak_ptr 打破]\n  G -->|否| E'},
   ]},
-  {id:2,date:"2025-03-28",tags:["算法","LeetCode"],draft:false,color:"#2980b9",series:'s2',seriesOrder:1,pinned:false,title:"单调栈的三种经典应用",blocks:[
-    {type:'h2',content:'什么是单调栈？'},
-    {type:'p',content:'时间复杂度 $O(n)$，每个元素最多入栈出栈各一次。'},
-    {type:'h2',content:'模板代码'},
-    {type:'code',lang:'python',content:'def mono_stack(nums):\n    stack = []\n    for i, n in enumerate(nums):\n        while stack and nums[stack[-1]] < n:\n            idx = stack.pop()\n            print(f\'处理 index={idx}\')\n        stack.append(i)\n    return stack\n\nprint(mono_stack([2,1,5,6,2,3]))'},
-    {type:'h2',content:'三道例题对比'},
-    {type:'table',rows:[['题目','栈类型','触发时机'],['接雨水','递减栈','新元素更大'],['柱状图最大矩形','递增栈','新元素更小'],['每日温度','递减栈','新元素更大']]},
+  {id:2,date:"2025-03-28",tags:["Python","数据科学"],draft:false,color:"#2980b9",series:'s2',seriesOrder:1,pinned:false,title:"Python 异步编程：从回调到协程",blocks:[
+    {type:'h2',content:'异步编程演进'},
+    {type:'p',content:'从回调地狱到 async/await，Python 异步编程越来越优雅。理解事件循环是掌握协程的关键。'},
+    {type:'h2',content:'协程示例'},
+    {type:'code',lang:'python',content:'import asyncio\n\nasync def fetch(url):\n    print(f"Fetching {url}")\n    await asyncio.sleep(1)  # 模拟 I/O\n    return f"Data from {url}"\n\nasync def main():\n    tasks = [fetch(f"api/{i}") for i in range(3)]\n    results = await asyncio.gather(*tasks)\n    print(results)\n\nasyncio.run(main())'},
+    {type:'h2',content:'性能对比'},
+    {type:'table',rows:[['方式','3个请求耗时','并发能力'],['同步阻塞','3秒','无'],['多线程','1秒+开销','受GIL限制'],['协程','1秒','高']]},
+    {type:'h2',content:'事件循环原理'},
+    {type:'mermaid',content:'sequenceDiagram\n  participant M as main()\n  participant E as Event Loop\n  participant T as Task\n  M->>E: asyncio.run(main())\n  E->>T: 创建 Task\n  T->>E: await 异步操作\n  E->>E: 切换到其他 Task\n  E->>T: I/O 完成，恢复执行\n  T->>E: 返回结果'},
   ]},
-  {id:3,date:"2025-03-10",tags:["前端","性能优化"],draft:false,color:"#27ae60",series:'s1',seriesOrder:2,pinned:false,title:"React 渲染性能优化备忘录",blocks:[
-    {type:'h2',content:'核心原则'},
-    {type:'p',content:'React 重渲染的根本原因是引用变化。'},
-    {type:'h2',content:'可运行示例'},
-    {type:'code',lang:'js',content:'function fib(n,memo={}){if(n<=1)return n;if(memo[n])return memo[n];memo[n]=fib(n-1,memo)+fib(n-2,memo);return memo[n];}\nfor(let i=0;i<=10;i++) console.log(`fib(${i}) = ${fib(i)}`);'},
-    {type:'quote',content:'点击「▶ 运行」查看输出！'},
+  {id:3,date:"2025-03-10",tags:["Go","后端开发"],draft:false,color:"#27ae60",series:'s1',seriesOrder:2,pinned:false,title:"Go 并发模式：Channel 与 Goroutine",blocks:[
+    {type:'h2',content:'Go 并发哲学'},
+    {type:'p',content:'"Do not communicate by sharing memory; instead, share memory by communicating." —— Rob Pike'},
+    {type:'h2',content:'Worker Pool 模式'},
+    {type:'code',lang:'go',content:'package main\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n    for j := range jobs {\n        results <- j * 2\n    }\n}\n\nfunc main() {\n    jobs := make(chan int, 100)\n    results := make(chan int, 100)\n    \n    // 启动 3 个 worker\n    for w := 1; w <= 3; w++ {\n        go worker(w, jobs, results)\n    }\n    \n    for j := 1; j <= 5; j++ { jobs <- j }\n    close(jobs)\n    \n    for r := 1; r <= 5; r++ {\n        println(<-results)\n    }\n}'},
+    {type:'h2',content:'并发模式对比'},
+    {type:'table',rows:[['模式','适用场景','特点'],['Worker Pool','任务队列','限制并发数'],['Fan-out','任务分发','并行处理'],['Pipeline','数据处理链','阶段解耦']]},
+    {type:'h2',content:'Channel 数据流'},
+    {type:'mermaid',content:'graph LR\n  A[Producer] -->|jobs channel| B[Worker 1]\n  A --> C[Worker 2]\n  A --> D[Worker 3]\n  B -->|results channel| E[Consumer]\n  C --> E\n  D --> E'},
   ]},
-  {id:4,date:"2025-02-22",tags:["Python","工具链"],draft:false,color:"#8e44ad",series:'s2',seriesOrder:2,pinned:false,title:"用 uv 替换 pip + venv",blocks:[
-    {type:'h2',content:'速度对比'},
-    {type:'code',lang:'js',content:"const t=['pip','poetry','uv'],ms=[4200,1800,120];\nt.forEach((n,i)=>console.log(n.padEnd(8)+'█'.repeat(Math.round(ms[i]/200))+' '+ms[i]+'ms'));"},
-    {type:'h2',content:'命令对照'},
-    {type:'table',rows:[['操作','pip','uv'],['创建环境','python -m venv .venv','uv venv'],['安装包','pip install X','uv pip install X']]},
+  {id:4,date:"2025-02-22",tags:["Linux","运维"],draft:false,color:"#8e44ad",series:'s2',seriesOrder:2,pinned:false,title:"Linux 进程管理：从 fork 到 systemd",blocks:[
+    {type:'h2',content:'进程生命周期'},
+    {type:'p',content:'理解 Linux 进程模型是系统编程的基础。从 fork 创建子进程，到 exec 加载新程序，再到僵尸进程的处理。'},
+    {type:'h2',content:'常用命令'},
+    {type:'code',lang:'bash',content:'# 查看进程树\npstree -p\n\n# 查找进程\nps aux | grep nginx\n\n# 终止进程\nkill -9 <PID>\n\n# 后台运行\nnohup ./server &\n\n# systemd 服务管理\nsystemctl status nginx\nsystemctl enable nginx'},
+    {type:'h2',content:'进程状态'},
+    {type:'table',rows:[['状态','缩写','说明'],['运行','R','正在运行或就绪'],['睡眠','S','可中断睡眠'],['停止','T','暂停执行'],['僵尸','Z','已终止但未回收']]},
+    {type:'h2',content:'进程创建流程'},
+    {type:'mermaid',content:'graph TD\n  A[父进程] -->|fork| B[子进程]\n  B --> C{exec?}\n  C -->|是| D[加载新程序]\n  C -->|否| E[继续父进程代码]\n  D --> F[运行新程序]\n  F -->|exit| G[僵尸状态]\n  A -->|wait| G\n  G --> H[完全退出]'},
   ]},
 ];
 var DEFAULT_CHECKINS=[
@@ -839,7 +915,7 @@ var DEFAULT_CHECKINS=[
   {id:3,date:"2025-04-08",type:"mood",content:"今天 debug 了三个小时最后发现少了一个分号。\n但功能跑通的那一刻还是很爽。",tags:["日常","编程"],mood:"😌",img:""},
   {id:4,date:"2025-03-30",type:"travel",content:"🌸 京都岚山竹林，傍晚渡月桥，夕阳把整条河染成橘色。",tags:["京都","自然"],mood:"🥰",img:""},
 ];
-var DEFAULT_SERIES=[{id:'s1',name:'系统编程入门',desc:'从零理解底层'},{id:'s2',name:'算法精讲',desc:'数据结构与算法'}];
+var DEFAULT_SERIES=[{id:'s1',name:'现代编程语言',desc:'深入理解语言特性'},{id:'s2',name:'工程实践',desc:'系统与运维'}];
 
 var posts=[],checkins=[],seriesList=[],nid=10,ncid=10;
 var atag=null,prev='home',editId=null,isDark=false;
@@ -1401,12 +1477,18 @@ function togglePin(id){var p=posts.find(function(x){return x.id===id;});if(p){p.
 
 function renderTags(){
   var m=tagMap();
-  document.getElementById('tlist').innerHTML=Object.keys(m).map(function(tag){
+  var sorted=Object.entries(m).sort(function(a,b){return b[1]-a[1];});
+  document.getElementById('tags-grid').innerHTML=sorted.map(function(entry){
+    var tag=entry[0],count=entry[1];
     var ps=posts.filter(function(p){return !p.draft&&p.tags.indexOf(tag)>-1;});
-    return '<div class="ts"><div class="th"><span class="th-hash">#</span>'+escText(tag)+'<em>'+ps.length+' 篇</em></div>'+
-      ps.map(function(p){return '<div class="tr" onclick="openPost('+p.id+')">'+
-        '<span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+(p.color||'#ccc')+';"></span>'+escText(p.title)+'</span>'+
-        '<span>'+p.date+'</span></div>';}).join('')+'</div>';
+    var displayPosts=ps.slice(0,5);
+    var hasMore=ps.length>5;
+    return '<div class="tag-card" onclick="filterTag(\''+escText(tag)+'\')">'+
+      '<div class="tag-card-header"><div class="tag-card-name">'+escText(tag)+'</div><div class="tag-card-count">'+count+' 篇</div></div>'+
+      '<div class="tag-card-posts">'+
+      displayPosts.map(function(p){return '<div class="tag-card-post" onclick="event.stopPropagation();openPost('+p.id+')">'+escText(p.title)+'</div>';}).join('')+
+      (hasMore?'<div class="tag-card-more">查看全部 '+ps.length+' 篇 →</div>':'')+
+      '</div></div>';
   }).join('');
 }
 function renderSeries(){
@@ -1417,7 +1499,147 @@ function renderSeries(){
       '<div>'+ps.map(function(p,i){return '<div class="sc-post" onclick="openPost('+p.id+')"><span class="sc-num">'+(i+1).toString().padStart(2,'0')+'</span>'+escText(p.title)+'</div>';}).join('')+'</div></div>';
   }).join('');
 }
+function renderLab(){
+  // 实验室页面初始化，关闭可能正在运行的效果
+  stopLabEffect();
+}
 var COLORS=['#6366f1','#e74c3c','#27ae60','#e67e22','#2980b9','#8e44ad','#16a085','#d35400'];
+
+/* ═══ Lab Effects ═══ */
+var labAnimationId=null,labParticles=[],labCanvas=null,labCtx=null;
+function initLabCanvas(){
+  labCanvas=document.getElementById('lab-canvas');
+  labCtx=labCanvas.getContext('2d');
+  labCanvas.width=window.innerWidth;
+  labCanvas.height=window.innerHeight;
+  labCanvas.classList.add('on');
+  document.querySelector('.lab-close').classList.add('on');
+}
+function stopLabEffect(){
+  if(labAnimationId){cancelAnimationFrame(labAnimationId);labAnimationId=null;}
+  labParticles=[];
+  if(labCanvas){labCanvas.classList.remove('on');}
+  var closeBtn=document.querySelector('.lab-close');
+  if(closeBtn)closeBtn.classList.remove('on');
+  if(labCtx)labCtx.clearRect(0,0,labCanvas.width,labCanvas.height);
+}
+function startParticles(){
+  initLabCanvas();
+  labParticles=[];
+  var mouse={x:labCanvas.width/2,y:labCanvas.height/2};
+  labCanvas.onmousemove=function(e){mouse.x=e.clientX;mouse.y=e.clientY;};
+  function animate(){
+    labCtx.fillStyle='rgba(0,0,0,0.1)';
+    labCtx.fillRect(0,0,labCanvas.width,labCanvas.height);
+    for(var i=0;i<2;i++){
+      labParticles.push({
+        x:mouse.x,y:mouse.y,
+        vx:(Math.random()-0.5)*4,
+        vy:(Math.random()-0.5)*4,
+        life:60,
+        color:'hsl('+Math.random()*360+',70%,60%)'
+      });
+    }
+    for(var i=labParticles.length-1;i>=0;i--){
+      var p=labParticles[i];
+      p.x+=p.vx;p.y+=p.vy;p.life--;
+      labCtx.beginPath();
+      labCtx.arc(p.x,p.y,3,0,Math.PI*2);
+      labCtx.fillStyle=p.color;
+      labCtx.globalAlpha=p.life/60;
+      labCtx.fill();
+      labCtx.globalAlpha=1;
+      if(p.life<=0)labParticles.splice(i,1);
+    }
+    labAnimationId=requestAnimationFrame(animate);
+  }
+  animate();
+}
+function startMatrix(){
+  initLabCanvas();
+  var cols=Math.floor(labCanvas.width/14);
+  var drops=new Array(cols).fill(1);
+  var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+  function animate(){
+    labCtx.fillStyle='rgba(0,0,0,0.05)';
+    labCtx.fillRect(0,0,labCanvas.width,labCanvas.height);
+    labCtx.fillStyle='#0f0';
+    labCtx.font='14px monospace';
+    for(var i=0;i<drops.length;i++){
+      var char=chars[Math.floor(Math.random()*chars.length)];
+      labCtx.fillText(char,i*14,drops[i]*14);
+      if(drops[i]*14>labCanvas.height&&Math.random()>0.975)drops[i]=0;
+      drops[i]++;
+    }
+    labAnimationId=requestAnimationFrame(animate);
+  }
+  animate();
+}
+function startFireworks(){
+  initLabCanvas();
+  var rockets=[],particles=[];
+  labCanvas.onclick=function(e){
+    rockets.push({x:e.clientX,y:labCanvas.height,vy:-8-Math.random()*4,targetY:e.clientY,hue:Math.random()*360});
+  };
+  function animate(){
+    labCtx.fillStyle='rgba(0,0,0,0.15)';
+    labCtx.fillRect(0,0,labCanvas.width,labCanvas.height);
+    // rockets
+    for(var i=rockets.length-1;i>=0;i--){
+      var r=rockets[i];
+      r.y+=r.vy;
+      labCtx.beginPath();
+      labCtx.arc(r.x,r.y,3,0,Math.PI*2);
+      labCtx.fillStyle='hsl('+r.hue+',100%,70%)';
+      labCtx.fill();
+      if(r.y<=r.targetY){
+        for(var j=0;j<30;j++){
+          var angle=Math.random()*Math.PI*2,speed=Math.random()*6+2;
+          particles.push({x:r.x,y:r.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,hue:r.hue,life:60});
+        }
+        rockets.splice(i,1);
+      }
+    }
+    // particles
+    for(var i=particles.length-1;i>=0;i--){
+      var p=particles[i];
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.1;p.life--;
+      labCtx.beginPath();
+      labCtx.arc(p.x,p.y,2,0,Math.PI*2);
+      labCtx.fillStyle='hsl('+p.hue+',100%,60%)';
+      labCtx.globalAlpha=p.life/60;
+      labCtx.fill();
+      labCtx.globalAlpha=1;
+      if(p.life<=0)particles.splice(i,1);
+    }
+    labAnimationId=requestAnimationFrame(animate);
+  }
+  animate();
+  toast('点击屏幕放烟花 🎆','ok');
+}
+function startRipple(){
+  initLabCanvas();
+  var ripples=[];
+  labCanvas.onclick=function(e){
+    ripples.push({x:e.clientX,y:e.clientY,r:0,maxR:150,alpha:1});
+  };
+  function animate(){
+    labCtx.clearRect(0,0,labCanvas.width,labCanvas.height);
+    for(var i=ripples.length-1;i>=0;i--){
+      var r=ripples[i];
+      r.r+=3;r.alpha=1-r.r/r.maxR;
+      labCtx.beginPath();
+      labCtx.arc(r.x,r.y,r.r,0,Math.PI*2);
+      labCtx.strokeStyle='rgba(100,149,237,'+r.alpha+')';
+      labCtx.lineWidth=2;
+      labCtx.stroke();
+      if(r.r>=r.maxR)ripples.splice(i,1);
+    }
+    labAnimationId=requestAnimationFrame(animate);
+  }
+  animate();
+  toast('点击屏幕产生涟漪 💧','ok');
+}
 function renderDash(){
   var pub=posts.filter(function(p){return !p.draft;});
   var tw=pub.reduce(function(a,p){return a+wcFromBlocks(p.blocks||[]);},0);
@@ -1445,7 +1667,8 @@ function stat(v,l){return '<div class="stat-card"><div class="stat-val">'+v+'</d
 
 /* ═══ Post detail ═══ */
 function openPost(id){
-  prev=document.querySelector('.pg.on').id.replace('pg-','');
+  var currentPg=document.querySelector('.pg.on').id.replace('pg-','');
+  if(currentPg!=='post')prev=currentPg;
   var p=posts.find(function(x){return x.id===id;});
   var blocks=p.blocks||[];
   var toc=buildToc(blocks),html=renderBlocksHTML(blocks);
@@ -1722,6 +1945,13 @@ function addBlockAfter(bid,e){
   var btn=e.target.closest('.bh-btn');
   showSlashAtBtn(btn);
 }
+function addBlockAtEnd(){
+  var newB=newBlock('p');
+  editorBlocks.push(newB);
+  pushHistory();
+  renderBlocks();
+  focusBlock(newB.id);
+}
 function deleteBlock(bid){
   if(editorBlocks.length<=1){toast('至少保留一个块','err');return;}
   var idx=editorBlocks.findIndex(function(x){return x.id===bid;});
@@ -1898,6 +2128,10 @@ function delPost(id){
 }
 function cancelWrite(){
   if(hasUnsavedWork()&&!confirm('放弃当前内容？'))return;
+  editId=null;
+  editorBlocks=[newBlock('p')];
+  editorHistory=[];historyCursor=-1;
+  clearAutosave();
   goNav('home');
 }
 
@@ -1927,8 +2161,7 @@ function getCmdActions(){
   actions.push({id:'act-dark',group:'偏好',label:'切换深色模式',desc:'D',icon:isDark?'sun':'moon',action:function(){toggleDark();}});
   actions.push({id:'act-visitor',label:isVisitorMode?'返回作者模式':'切换访客预览',icon:'eye',action:function(){toggleMode();}});
   actions.push({id:'act-immersive',label:'沉浸阅读（文章页）',desc:'F',icon:'maximize-2',action:function(){if(document.getElementById('pg-post').classList.contains('on'))toggleImmersive();else toast('请先打开文章','err');}});
-  actions.push({id:'act-clear-cache', group:'系统', label:'清除浏览器缓存', desc:'清空本地缓存数据', icon:'trash-2', action:function(){ clearAppCache(); }});
-  actions.push({id:'act-force-refresh', group:'系统', label:'强制刷新页面', desc:'绕过缓存重新加载', icon:'refresh-cw', action:function(){ forceRefresh(); }});
+  actions.push({id:'act-refresh', group:'系统', label:'刷新页面', desc:'重新加载', icon:'refresh-cw', action:function(){ forceRefresh(); }});
   return actions;
 }
 function renderCmdResults(){
@@ -2049,15 +2282,26 @@ async function exportPublicHTML(){
     // Remove admin-only classes' contents? No — CSS will hide them with body.visitor
     // Add inject script
     var injectScript=clone.ownerDocument.createElement('script');
-    injectScript.textContent='window.__PUBLIC_DATA__='+JSON.stringify(publicData).replace(/<\/script/gi,'<\\/script')+';window.__FORCE_VISITOR__=true;';
+    injectScript.textContent='window.__PUBLIC_DATA__='+JSON.stringify(publicData).replace(/<\/script/gi,'<\/script')+';window.__FORCE_VISITOR__=true;';
     clone.querySelector('body').appendChild(injectScript);
     // Ensure body has visitor class baked in
     var bodyTag=clone.querySelector('body');
     bodyTag.classList.add('visitor');
+    // Hide life nav in visitor mode
     var lifeNavBtn = clone.querySelector('.nl button.life-nav');
     if (lifeNavBtn) {
-        lifeNavBtn.classList.remove('admin-only');
+        lifeNavBtn.classList.add('admin-only');
     }
+    // Remove check-in form and button from life page
+    var ciForm = clone.querySelector('#ci-form-wrap');
+    if(ciForm) ciForm.remove();
+    var ciBtn = clone.querySelector('#pg-life .btn-primary');
+    if(ciBtn) ciBtn.remove();
+    // Remove lab page for public export
+    var labNav = clone.querySelector('.nl button[onclick*="lab"]');
+    if(labNav) labNav.remove();
+    var labPg = clone.querySelector('#pg-lab');
+    if(labPg) labPg.remove();
     var htmlOut='<!DOCTYPE html>\n<html lang="zh">'+clone.innerHTML+'</html>';
 
     var blob=new Blob([htmlOut],{type:'text/html'});
@@ -2125,13 +2369,12 @@ function hasUnsavedWork(){
 function showPg(id){document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});document.getElementById('pg-'+id).classList.add('on');updateProgress();}
 function goNav(id,el){
   if(hasUnsavedWork()&&id!=='write'){if(!confirm('你有未保存的内容，确认离开吗？'))return;}
-  if(document.startViewTransition)document.startViewTransition(function(){_nav(id,el);});
-  else _nav(id,el);
+  _nav(id,el);
 }
 function _nav(id,el){
   showPg(id);
   document.querySelectorAll('.nl button').forEach(function(b){b.classList.remove('on');});
-  var map={home:0,life:1,tags:2,series:3,dash:4,about:5};
+  var map={home:0,life:1,tags:2,series:3,lab:4,about:5};
   if(el)el.classList.add('on');
   else if(map[id]!==undefined)document.querySelectorAll('.nl button')[map[id]].classList.add('on');
   document.querySelectorAll('.pi.kb-focus').forEach(function(p){p.classList.remove('kb-focus');});
@@ -2139,6 +2382,7 @@ function _nav(id,el){
   if(id==='life')renderCheckins();
   if(id==='tags')renderTags();
   if(id==='series')renderSeries();
+  if(id==='lab')renderLab();
   if(id==='dash')renderDash();
   if(id==='write'&&editId===null){
     document.getElementById('etitle').value='';document.getElementById('etags').value='';
@@ -2209,6 +2453,11 @@ window.undoEditor = undoEditor;
 window.redoEditor = redoEditor;
 window.openCmd = openCmd;
 window.closeCmd = closeCmd;
+window.startParticles = startParticles;
+window.startMatrix = startMatrix;
+window.startFireworks = startFireworks;
+window.startRipple = startRipple;
+window.stopLabEffect = stopLabEffect;
 
 /* ═══ Init ═══ */
 window.addEventListener('beforeunload',function(e){if(hasUnsavedWork()){e.preventDefault();e.returnValue='';}});
