@@ -1147,6 +1147,7 @@ var selectedMood='😊',lifeFilter=null;
 var ciImg='',ciEditId=null;
 var autosaveTimer=null,tocObserver=null;
 var cmdFocus=0,cmdResults=[],recentCmds=[];
+var lastBackPress=0; // 记录上次按返回的时间
 var slashFocus=0,slashItems=[];
 var isComposing=false;
 var isVisitorMode=false;
@@ -3196,9 +3197,27 @@ function goBack(){
     var map={home:0,life:1,tags:2,series:3,lab:4,about:5};
     document.querySelectorAll('.nl button').forEach(function(b){b.classList.remove('on');});
     if(map[prevPage]!==undefined)document.querySelectorAll('.nl button')[map[prevPage]].classList.add('on');
+    lastBackPress=0; // 重置
   }else{
-    // 没有历史，回到首页
-    goNav('home');
+    // 没有历史，检查是否在主页
+    var currentPg=document.querySelector('.pg.on').id.replace('pg-','');
+    if(currentPg==='home'){
+      var now=Date.now();
+      if(now-lastBackPress<2000){
+        // 2秒内第二次按，尝试退出
+        lastBackPress=0;
+        // 尝试关闭窗口（可能被浏览器阻止）
+        window.close();
+        // 如果不能关闭，提示用户
+        toast('请手动关闭浏览器标签','ok');
+      }else{
+        lastBackPress=now;
+        toast('再按一次退出','ok');
+      }
+    }else{
+      goNav('home');
+      lastBackPress=0;
+    }
   }
 }
 function filterTag(t){atag=t;goNav('home');}
