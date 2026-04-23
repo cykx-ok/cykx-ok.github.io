@@ -54,16 +54,41 @@ mark{background:#fff3a0;color:#7a5c00;padding:0 2px;border-radius:2px}
 [data-tip]{position:relative}
 [data-tip]::after{
   content:attr(data-tip);
-  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(2px);
+  position:absolute;bottom:calc(100% + 6px);
   background:var(--text);color:var(--bg);
   padding:4px 10px;border-radius:6px;
   font-size:11.5px;font-weight:500;white-space:nowrap;
   pointer-events:none;opacity:0;transition:all .15s var(--ease);
   z-index:1500;box-shadow:var(--shadow);
 }
-[data-tip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);transition-delay:.4s}
-[data-tip-left]::after{left:auto;right:calc(100% + 6px);top:50%;bottom:auto;transform:translateY(-50%) translateX(2px)}
-[data-tip-left]:hover::after{transform:translateY(-50%) translateX(0)}
+/* 默认向右偏移，避免超出左侧 */
+[data-tip]::after{
+  left:auto;
+  right:0;
+  transform:translateX(0) translateY(2px);
+}
+[data-tip]:hover::after{
+  opacity:1;
+  transform:translateX(0) translateY(0);
+  transition-delay:.4s;
+}
+/* 左侧显示（用于页面左边的元素） */
+[data-tip-left]::after{
+  left:auto;
+  right:calc(100% + 6px);
+  top:50%;
+  bottom:auto;
+  transform:translateY(-50%) translateX(0);
+}
+[data-tip-left]:hover::after{
+  transform:translateY(-50%) translateX(0);
+}
+/* 针对 nav-r 右侧按钮特殊处理，让 tooltip 向左对齐 */
+.nav-r [data-tip]::after{
+  left:auto;
+  right:0;
+  transform:translateX(0) translateY(2px);
+}
 
 #progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),#a78bfa);width:0%;z-index:999;transition:width .1s;box-shadow:0 0 8px var(--accent)}
 #toast-stack{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:500;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
@@ -531,10 +556,12 @@ body.immersive #immersive-exit{display:inline-flex}
     <button onclick="goNav('about',this)" data-tip="关于博主"><i data-lucide="user" class="icon-sm"></i>关于</button>
   </div>
   <div class="nav-r">
+    <button class="icon-btn" onclick="forceRefresh()" data-tip="强制刷新 (绕过缓存)"><i data-lucide="refresh-cw" class="icon-sm"></i></button>
+    <button class="icon-btn" onclick="clearAppCache()" data-tip="清除缓存并刷新"><i data-lucide="trash-2" class="icon-sm"></i></button>
     <button class="cmd-btn" onclick="openCmd()" data-tip="搜索 & 命令面板"><i data-lucide="search" class="icon-sm"></i>搜索<span class="kbd" id="cmd-kbd">⌘K</span></button>
     <button class="cta-btn admin-only" onclick="goNav('write')" data-tip="开始写作"><i data-lucide="pencil" class="icon-sm"></i>写作<span class="kbd" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8)">N</span></button>
-    <button class="icon-btn" id="mode-btn" onclick="toggleMode()" data-tip="切换访客预览模式"><i data-lucide="eye" class="icon-sm"></i></button>
-    <button class="icon-btn" id="dark-btn" onclick="toggleDark()" data-tip="切换深色模式"><i data-lucide="moon" class="icon-sm"></i></button>
+    <button class="icon-btn" id="mode-btn" onclick="toggleMode()" data-tip="切换访客预览模式" data-tip-left><i data-lucide="eye" class="icon-sm"></i></button>
+    <button class="icon-btn" id="dark-btn" onclick="toggleDark()" data-tip="切换深色模式" data-tip-left><i data-lucide="moon" class="icon-sm"></i></button>
   </div>
 </div></nav>
 
@@ -1900,6 +1927,8 @@ function getCmdActions(){
   actions.push({id:'act-dark',group:'偏好',label:'切换深色模式',desc:'D',icon:isDark?'sun':'moon',action:function(){toggleDark();}});
   actions.push({id:'act-visitor',label:isVisitorMode?'返回作者模式':'切换访客预览',icon:'eye',action:function(){toggleMode();}});
   actions.push({id:'act-immersive',label:'沉浸阅读（文章页）',desc:'F',icon:'maximize-2',action:function(){if(document.getElementById('pg-post').classList.contains('on'))toggleImmersive();else toast('请先打开文章','err');}});
+  actions.push({id:'act-clear-cache', group:'系统', label:'清除浏览器缓存', desc:'清空本地缓存数据', icon:'trash-2', action:function(){ clearAppCache(); }});
+  actions.push({id:'act-force-refresh', group:'系统', label:'强制刷新页面', desc:'绕过缓存重新加载', icon:'refresh-cw', action:function(){ forceRefresh(); }});
   return actions;
 }
 function renderCmdResults(){
@@ -2194,6 +2223,18 @@ document.addEventListener('click',function(e){
 });
 
 window.addEventListener('load',async function(){
+  // ========== 每次打开自动清除缓存 ==========
+  try {
+    localStorage.removeItem('devblog_v12');
+    localStorage.removeItem('devblog_v11');
+    localStorage.removeItem('devblog_v10');
+    localStorage.removeItem('devblog_v9');
+    localStorage.removeItem('devblog_v12_draft');
+    sessionStorage.clear();
+    console.log('[Cache] 已自动清理缓存数据');
+  } catch(e) { console.warn('[Cache] 清理失败:', e); }
+  // =========================================
+
   // Update kbd display for platform
   document.getElementById('cmd-kbd').textContent=MOD_KEY+'K';
   document.getElementById('publish-kbd').textContent=MOD_KEY+'⏎';
@@ -2204,4 +2245,74 @@ window.addEventListener('load',async function(){
   document.getElementById('cmd-input').addEventListener('input',function(){cmdFocus=0;renderCmdResults();});
   setupDragDrop();
 });
+// ========== 缓存清理 & 强制刷新 ==========
+function clearAppCache() {
+  var cleared = [];
+  
+  // 1. 清除 localStorage 中的博客数据（保留用户偏好设置）
+  try {
+    // 备份当前深色模式状态
+    var isDarkNow = isDark;
+    
+    // 清除主要数据存储
+    localStorage.removeItem('devblog_v12');
+    localStorage.removeItem('devblog_v11');
+    localStorage.removeItem('devblog_v10');
+    localStorage.removeItem('devblog_v9');
+    localStorage.removeItem('devblog_v12_draft');
+    
+    cleared.push('localStorage 博客数据');
+  } catch(e) { console.warn(e); }
+  
+  // 2. 清除 sessionStorage
+  try {
+    sessionStorage.clear();
+    cleared.push('sessionStorage');
+  } catch(e) {}
+  
+  // 3. 清除 IndexedDB（如果存在）
+  if (window.indexedDB && window.indexedDB.databases) {
+    try {
+      // 尝试删除常见的数据库
+      var dbNames = ['devblog', 'devblog_v12', 'posts-store', 'checkins-store'];
+      dbNames.forEach(function(name) {
+        try { window.indexedDB.deleteDatabase(name); } catch(e) {}
+      });
+      cleared.push('IndexedDB');
+    } catch(e) {}
+  }
+  
+  // 4. 清除 Service Worker 缓存（如果存在）
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        names.forEach(function(name) {
+          if (name.includes('devblog') || name.includes('blog')) {
+            caches.delete(name);
+          }
+        });
+      }).catch(function(){});
+      cleared.push('Service Worker 缓存');
+    }
+  }
+  
+  toast('🗑️ 已清除: ' + cleared.join('、') + '\n页面将重新加载', 'ok', {duration: 3000});
+  
+  // 延迟 1.5 秒后强制刷新页面
+  setTimeout(function() {
+    location.reload(true);  // true = 强制从服务器重新加载
+  }, 1500);
+}
+
+function forceRefresh() {
+  toast('🔄 正在强制刷新...', 'ok', {duration: 1500});
+  // 使用 location.reload(true) 强制绕过缓存重新加载
+  setTimeout(function() {
+    location.reload(true);
+  }, 100);
+}
+
+// 确保函数暴露在全局
+window.clearAppCache = clearAppCache;
+window.forceRefresh = forceRefresh;
 </script>
