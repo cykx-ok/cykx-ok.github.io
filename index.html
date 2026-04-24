@@ -108,6 +108,12 @@ mark{background:#fff3a0;color:#7a5c00;padding:0 2px;border-radius:2px}
 .toast.err{background:linear-gradient(135deg,var(--danger),#dc2626);color:#fff}
 .toast.ok{background:linear-gradient(135deg,var(--success),#059669);color:#fff}
 .toast-btn{background:rgba(255,255,255,.2);color:inherit;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;margin-left:4px;cursor:pointer;transition:all .2s}
+
+/* 版本更新提示条 */
+#update-bar{position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;padding:10px 20px;text-align:center;font-size:13px;font-weight:500;z-index:1000;display:none;align-items:center;justify-content:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,0.15)}
+#update-bar.show{display:flex}
+#update-bar button{background:rgba(255,255,255,.2);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+#update-bar button:hover{background:rgba(255,255,255,.3)}
 .toast-btn:hover{background:rgba(255,255,255,.3)}
 
 #btt{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;display:none;align-items:center;justify-content:center;z-index:50;opacity:0;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 16px rgba(91,91,214,0.4);border:none}
@@ -138,6 +144,7 @@ nav{border-bottom:1px solid var(--border);padding:11px 0;background:rgba(255,255
 .nl button.on::before{opacity:1}
 .nl button.admin-only{opacity:.8}
 body.visitor .admin-only{display:none!important}
+body:not(.visitor) .visitor-only{display:none!important}
 .nav-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .cmd-btn{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 10px 6px 12px;font-size:12px;color:var(--text3);transition:all .2s cubic-bezier(.4,0,.2,1)}
 .cmd-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
@@ -303,6 +310,26 @@ body.visitor #ci-form-wrap{display:none!important}
 .cc-mood{font-size:22px;margin-left:auto;flex-shrink:0}
 .cc-actions{position:absolute;top:10px;right:10px;display:flex;gap:4px;opacity:0;transition:opacity .2s}
 .checkin-card:hover .cc-actions{opacity:1}
+.cc-reactions{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap}
+.cc-reaction{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:12px;cursor:pointer;transition:all .2s}
+.cc-reaction:hover{border-color:var(--accent);background:var(--accent-soft)}
+.cc-reaction.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.cc-reaction-count{font-weight:600}
+.post-reactions{display:flex;gap:8px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--border);margin-top:24px}
+.post-reactions-label{font-size:13px;color:var(--text3);margin-right:8px;display:flex;align-items:center}
+.post-reaction{display:flex;align-items:center;gap:4px;padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg2);font-size:14px;cursor:pointer;transition:all .2s}
+.post-reaction:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px)}
+.post-reaction.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.post-reaction-count{font-weight:600;font-size:12px}
+.cc-comment-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:12px;cursor:pointer;transition:all .2s;color:var(--text3);margin-left:auto}
+.cc-comment-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ci-reactions-bar{display:flex;align-items:center;gap:4px;margin-top:12px;flex-wrap:wrap}
+.ci-detail-modal .modal-box{max-width:640px}
+.ci-detail-content{padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.ci-detail-content .cc-content{font-size:15px;line-height:1.7}
+.ci-detail-reactions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.ci-detail-reactions .cc-reaction{padding:6px 14px}
+.ci-comments{min-height:200px}
 .cc-mini-btn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text4);background:var(--bg);border:1px solid var(--border);transition:all .2s}
 .cc-mini-btn:hover{color:var(--text);transform:scale(1.1)}
 .cc-mini-btn.del:hover{color:var(--danger);border-color:#fecaca;background:#fef2f2}
@@ -598,6 +625,12 @@ body.immersive #immersive-exit{display:inline-flex}
 .modal-box{background:var(--bg);border-radius:20px;padding:26px;width:480px;max-width:92vw;max-height:82vh;overflow-y:auto;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,0.25);animation:cmd-pop .25s cubic-bezier(.175,.885,.32,1.275)}
 .modal-title{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text);display:flex;align-items:center;gap:10px}
 .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.login-box{display:flex;flex-direction:column;gap:16px}
+.login-box input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:12px;font-size:15px;background:var(--bg2);transition:all .2s}
+.login-box input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.login-box .login-hint{font-size:12px;color:var(--text4);text-align:center}
+.owner-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--accent-soft);color:var(--accent);border-radius:99px;font-size:11px;font-weight:600}
+.guest-checkin-form{background:var(--bg2);border:1px dashed var(--border);border-radius:16px;padding:16px;margin-bottom:20px}
 .series-mgr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:var(--bg2);transition:all .2s}
 .series-mgr-item:hover{border-color:var(--border2)}
 .series-mgr-item input{flex:1;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;background:var(--bg);color:var(--text);outline:none;transition:all .2s}
@@ -715,6 +748,7 @@ body.immersive #immersive-exit{display:inline-flex}
   </div>
 </div>
 
+<div id="update-bar">🎉 博客已更新！<button onclick="location.reload(true)">立即刷新</button><button onclick="this.parentElement.classList.remove('show')">稍后</button></div>
 <div id="progress"></div>
 <div id="toast-stack"></div>
 <button id="btt" aria-label="返回顶部" data-tip="返回顶部" data-tip-left><i data-lucide="arrow-up"></i></button>
@@ -785,6 +819,28 @@ body.immersive #immersive-exit{display:inline-flex}
   </div>
 </div>
 
+<div id="ci-detail-modal" class="modal ci-detail-modal" style="display:none" onclick="if(event.target===this)closeCheckinDetail()">
+  <div class="modal-box" style="width:640px;max-width:95%" onclick="event.stopPropagation()">
+    <div class="modal-title"><i data-lucide="coffee" class="icon-sm"></i>生活动态</div>
+    <div id="ci-detail-body"></div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeCheckinDetail()">关闭</button></div>
+  </div>
+</div>
+
+<div id="login-modal" class="modal" style="display:none" onclick="if(event.target===this)closeLogin()">
+  <div class="modal-box" style="width:360px;max-width:92vw" onclick="event.stopPropagation()">
+    <div class="modal-title"><i data-lucide="lock" class="icon-sm"></i>博主登录</div>
+    <div class="login-box">
+      <input type="password" id="login-pwd" placeholder="请输入博主密码" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="login-hint">仅限博主本人访问 · 密码错误将保持访客模式</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeLogin()">取消</button>
+      <button class="btn btn-primary" onclick="doLogin()">登录</button>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="img-input" accept="image/*" style="display:none">
 <input type="file" id="ci-img-input" accept="image/*" style="display:none" onchange="handleCiImg(event)">
 <input type="file" id="import-input" accept=".json" style="display:none" onchange="importData(event)">
@@ -793,7 +849,7 @@ body.immersive #immersive-exit{display:inline-flex}
   <div class="logo"><span class="logo-dot"></span>cycyc</div>
   <div class="nl">
     <button class="on" onclick="goNav('home',this)" data-tip="技术文章"><i data-lucide="file-text" class="icon-sm"></i>技术</button>
-    <button onclick="goNav('life',this)" class="admin-only life-nav" data-tip="生活打卡"><i data-lucide="coffee" class="icon-sm"></i>生活</button>
+    <button onclick="goNav('life',this)" data-tip="生活打卡"><i data-lucide="coffee" class="icon-sm"></i>生活</button>
     <button onclick="goNav('tags',this)" data-tip="按标签浏览"><i data-lucide="hash" class="icon-sm"></i>分类</button>
     <button onclick="goNav('series',this)" data-tip="系列专栏"><i data-lucide="layers" class="icon-sm"></i>系列</button>
     <button onclick="goNav('lab',this)" data-tip="实验性功能"><i data-lucide="flask-conical" class="icon-sm"></i>实验室</button>
@@ -804,7 +860,8 @@ body.immersive #immersive-exit{display:inline-flex}
     <button class="cmd-btn" onclick="openCmd()" data-tip="搜索 & 命令面板"><i data-lucide="search" class="icon-sm"></i>搜索<span class="kbd" id="cmd-kbd">⌘K</span></button>
     <button class="cta-btn admin-only" onclick="goNav('write')" data-tip="开始写作"><i data-lucide="pencil" class="icon-sm"></i>写作<span class="kbd" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8)">N</span></button>
     <button class="icon-btn admin-only" id="draft-btn" onclick="openDraftModal()" data-tip="草稿仓库" style="display:none"><i data-lucide="file-text" class="icon-sm"></i><span id="draft-badge" style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;padding:1px 5px;border-radius:99px;font-weight:600"></span></button>
-    <button class="icon-btn" id="mode-btn" onclick="toggleMode()" data-tip="切换访客预览模式" data-tip-left><i data-lucide="eye" class="icon-sm"></i></button>
+    <button class="icon-btn admin-only" id="logout-btn" onclick="logout()" data-tip="退出登录" data-tip-left><i data-lucide="log-out" class="icon-sm"></i></button>
+    <button class="icon-btn visitor-only" id="login-btn" onclick="openLogin()" data-tip="博主登录" data-tip-left><i data-lucide="log-in" class="icon-sm"></i></button>
     <button class="icon-btn" id="dark-btn" onclick="toggleDark()" data-tip="切换深色模式" data-tip-left><i data-lucide="moon" class="icon-sm"></i></button>
   </div>
 </div></nav>
@@ -827,9 +884,9 @@ body.immersive #immersive-exit{display:inline-flex}
 <div id="pg-life" class="pg">
   <div class="page-hd">
     <div><div class="page-title">生活碎片</div><div class="page-sub">旅行、阅读与日常的即时记录</div></div>
-    <button class="btn btn-primary admin-only" onclick="toggleCiForm()"><i data-lucide="plus" class="icon-sm"></i>打卡</button>
+    <button class="btn btn-primary" onclick="toggleCiForm()"><i data-lucide="plus" class="icon-sm"></i><span id="ci-btn-text">打卡</span></button>
   </div>
-  <div id="ci-form-wrap" class="admin-only" style="display:none">
+  <div id="ci-form-wrap" style="display:none">
     <div class="checkin-form">
       <div class="cf-row">
         <select id="cf-type"><option value="travel">🗺️ 旅行</option><option value="book">📖 读书</option><option value="mood">💭 心情</option></select>
@@ -1148,6 +1205,9 @@ var DEFAULT_CHECKINS=[
 ];
 var DEFAULT_SERIES=[{id:'s1',name:'现代编程语言',desc:'深入理解语言特性'},{id:'s2',name:'工程实践',desc:'系统与运维'}];
 
+// ═══ 版本号（每次更新后修改此数字）═══
+var APP_VERSION='2025.01.15'; // 修改这里触发更新提示
+
 var posts=[],checkins=[],seriesList=[],nid=10,ncid=10;
 var atag=null,editId=null,isDark=false;
 var selectedMood='😊',lifeFilter=null;
@@ -1157,11 +1217,41 @@ var cmdFocus=0,cmdResults=[],recentCmds=[];
 var lastBackPress=0; // 记录上次按返回的时间
 var slashFocus=0,slashItems=[];
 var isComposing=false;
-var isVisitorMode=false;
+var isVisitorMode=true; // 默认访客模式
+var OWNER_PASSWORD='cycyc2025'; // 博主密码，可修改
+var guestCheckins=[]; // 访客打卡数据
+var CI_REACTION_EMOJIS=['👍','❤️','😄','😮','😢']; // 生活区表情
+var POST_REACTION_EMOJIS=['👍','❤️','🔥','💡','❓']; // 文章表情
+var ciReactions={}; // 存储用户对每个打卡的反应状态
+var postReactions={}; // 存储用户对每篇文章的反应状态
 var editorBlocks=[],focusedBlockId=null;
 var editorHistory=[],historyCursor=-1;
 var slashForBlockId=null;
 var deletedCache=null;
+
+// ═══ 版本控制 ═══
+// 每次发布新版本时修改这个版本号
+var APP_VERSION='2025.01.15'; // 格式：年.月.日 或任意递增数字
+(function(){
+  var stored=localStorage.getItem('app_version');
+  if(stored&&stored!==APP_VERSION){
+    // 显示更新提示
+    setTimeout(function(){
+      showUpdateToast();
+    },1000);
+  }
+  localStorage.setItem('app_version',APP_VERSION);
+})();
+function showUpdateToast(){
+  var toast=document.createElement('div');
+  toast.id='update-toast';
+  toast.innerHTML='<span>🎉 发现新版本！</span><button onclick="forceUpdate()">立即更新</button><button onclick="this.parentElement.remove()">稍后</button>';
+  document.body.appendChild(toast);
+}
+function forceUpdate(){
+  localStorage.setItem('app_version',APP_VERSION);
+  location.reload(true);
+}
 
 // ═══ Giscus 评论配置 ═══
 var GISCUS_CONFIG={
@@ -1335,10 +1425,19 @@ async function loadStorage(){
     if(p&&p.value){
       var pf=JSON.parse(p.value);
       recentCmds=pf.recentCmds||[];
+      ciReactions=pf.ciReactions||{};
+      postReactions=pf.postReactions||{};
       if(pf.onboardSeen)renderOnboard(false);else renderOnboard(true);
       if(pf.dark){isDark=true;document.documentElement.className='dark';var i=document.getElementById('dark-btn').querySelector('[data-lucide]');if(i)i.setAttribute('data-lucide','sun');}
     } else renderOnboard(true);
   }catch(e){renderOnboard(true);}
+  // 加载访客打卡数据
+  await loadGuestCheckins();
+  // 默认访客模式
+  if(!window.__FORCE_VISITOR__ && isVisitorMode){
+    document.body.classList.add('visitor');
+  }
+  updateLoginUI();
 }
 async function persist(){
   try{
@@ -1350,8 +1449,20 @@ async function persist(){
 async function savePrefs(extra){
   try{
     var cur={};try{var p=await window.storage.get(PREFS_KEY);if(p&&p.value)cur=JSON.parse(p.value);}catch(e){}
-    Object.assign(cur,{recentCmds:recentCmds,dark:isDark},extra||{});
+    Object.assign(cur,{recentCmds:recentCmds,dark:isDark,ciReactions:ciReactions,postReactions:postReactions},extra||{});
     await window.storage.set(PREFS_KEY,JSON.stringify(cur));
+  }catch(e){}
+}
+var GUEST_CI_KEY='devblog_guest_checkins';
+async function loadGuestCheckins(){
+  try{
+    var r=await window.storage.get(GUEST_CI_KEY);
+    if(r&&r.value)guestCheckins=JSON.parse(r.value);
+  }catch(e){}
+}
+async function persistGuestCheckins(){
+  try{
+    await window.storage.set(GUEST_CI_KEY,JSON.stringify(guestCheckins));
   }catch(e){}
 }
 function exportData(){
@@ -1390,33 +1501,48 @@ function renderOnboard(show){
 }
 function dismissOnboard(){renderOnboard(false);savePrefs({onboardSeen:true});}
 
+/* ═══ Login System ═══ */
+function openLogin(){
+  document.getElementById('login-modal').style.display='flex';
+  document.getElementById('login-pwd').value='';
+  setTimeout(function(){document.getElementById('login-pwd').focus();},100);
+}
+function closeLogin(){
+  document.getElementById('login-modal').style.display='none';
+}
+function doLogin(){
+  var pwd=document.getElementById('login-pwd').value;
+  if(pwd===OWNER_PASSWORD){
+    isVisitorMode=false;
+    document.body.classList.remove('visitor');
+    closeLogin();
+    updateLoginUI();
+    toast('👋 欢迎回来，博主！','ok');
+  }else{
+    toast('密码错误','err');
+    document.getElementById('login-pwd').value='';
+    document.getElementById('login-pwd').focus();
+  }
+}
+function logout(){
+  isVisitorMode=true;
+  document.body.classList.add('visitor');
+  updateLoginUI();
+  goNav('home');
+  toast('已退出登录','ok');
+}
+function updateLoginUI(){
+  // 更新打卡按钮文本
+  var ciBtnText=document.getElementById('ci-btn-text');
+  if(ciBtnText)ciBtnText.textContent=isVisitorMode?'分享动态':'打卡';
+  // 刷新图标
+  refreshIcons();
+}
+
 /* ═══ Visitor mode (核心新功能) ═══ */
 function toggleMode(){
-  isVisitorMode=!isVisitorMode;
-  document.body.classList.toggle('visitor',isVisitorMode);
-  var lifeNavBtn = document.querySelector('.nl button.life-nav');
-  if (lifeNavBtn) {
-      if (isVisitorMode) {
-          lifeNavBtn.classList.remove('admin-only');
-      } else {
-          lifeNavBtn.classList.add('admin-only');
-      }
-  }
-  var btn=document.getElementById('mode-btn');
-  var icon=btn.querySelector('[data-lucide]');
-  if(isVisitorMode){
-    btn.classList.add('mode-indicator');
-    icon.setAttribute('data-lucide','eye');
-    btn.setAttribute('data-tip','访客预览中 · 点击返回作者模式');
-    if(document.querySelector('.pg.on').id==='pg-life'||document.querySelector('.pg.on').id==='pg-write'||document.querySelector('.pg.on').id==='pg-dash'){goNav('home');}
-    toast('🌍 当前是访客视角，点击眼睛图标返回作者模式','ok',{duration:3500});
-  } else {
-    btn.classList.remove('mode-indicator');
-    icon.setAttribute('data-lucide','eye');
-    btn.setAttribute('data-tip','切换访客预览模式');
-    toast('👤 已返回作者模式','ok');
-  }
-  refreshIcons();refreshHome();
+  // 点击眼睛图标 = 退出登录
+  logout();
 }
 
 /* ═══ Dark mode ═══ */
@@ -1467,57 +1593,186 @@ function submitCheckin(){
   var type=document.getElementById('cf-type').value;
   var tagsRaw=document.getElementById('cf-tags').value.trim();
   var tags=tagsRaw?tagsRaw.split(/[,，]/).map(function(t){return t.trim();}).filter(Boolean):[];
+  var author=isVisitorMode?'guest':'owner'; // 区分作者
+  
   if(ciEditId!==null){
+    // 编辑模式：查找是博主还是访客的打卡
     var ci=checkins.find(function(c){return c.id===ciEditId;});
-    if(ci){ci.content=content;ci.type=type;ci.tags=tags;ci.mood=selectedMood;if(ciImg)ci.img=ciImg;}
-    toast('打卡已更新','ok');
+    var gci=guestCheckins.find(function(c){return c.id===ciEditId;});
+    if(ci){
+      ci.content=content;ci.type=type;ci.tags=tags;ci.mood=selectedMood;if(ciImg)ci.img=ciImg;
+      toast('打卡已更新','ok');
+    }else if(gci){
+      gci.content=content;gci.type=type;gci.tags=tags;gci.mood=selectedMood;if(ciImg)gci.img=ciImg;
+      toast('打卡已更新','ok');
+      persistGuestCheckins();
+    }
   } else {
-    checkins.unshift({id:ncid++,date:today(),type:type,content:content,tags:tags,mood:selectedMood,img:ciImg});
-    toast('打卡成功 ✨','ok');
+    // 新建打卡
+    var newCi={id:ncid++,date:today(),type:type,content:content,tags:tags,mood:selectedMood,img:ciImg,author:author};
+    if(isVisitorMode){
+      guestCheckins.unshift(newCi);
+      persistGuestCheckins();
+      toast('分享成功 ✨ 感谢你的参与！','ok');
+    }else{
+      checkins.unshift(newCi);
+      persist();
+      toast('打卡成功 ✨','ok');
+    }
   }
-  toggleCiForm();renderCheckins();persist();
+  toggleCiForm();renderCheckins();
 }
 function editCheckin(id){
-  var c=checkins.find(function(x){return x.id===id;});if(!c)return;
+  var c=checkins.find(function(x){return x.id===id;});
+  var gc=guestCheckins.find(function(x){return x.id===id;});
+  if(!c && !gc)return;
+  var target=c||gc;
   ciEditId=id;
-  document.getElementById('cf-content').value=c.content;
-  document.getElementById('cf-tags').value=c.tags.join(', ');
-  document.getElementById('cf-type').value=c.type;
-  ciImg=c.img||'';
-  if(c.img){var p=document.getElementById('cf-img-preview');p.src=c.img;p.style.display='block';document.getElementById('cf-img-hint').style.display='none';}
-  document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');if(b.textContent===c.mood){b.classList.add('sel');selectedMood=c.mood;}});
+  document.getElementById('cf-content').value=target.content;
+  document.getElementById('cf-tags').value=target.tags.join(', ');
+  document.getElementById('cf-type').value=target.type;
+  ciImg=target.img||'';
+  if(target.img){var p=document.getElementById('cf-img-preview');p.src=target.img;p.style.display='block';document.getElementById('cf-img-hint').style.display='none';}
+  document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');if(b.textContent===target.mood){b.classList.add('sel');selectedMood=target.mood;}});
   document.getElementById('ci-submit-btn').innerHTML='保存 ✓';
   document.getElementById('ci-form-wrap').style.display='block';
   document.getElementById('cf-content').focus();
 }
 function deleteCheckin(id){
-  var ci=checkins.find(function(c){return c.id===id;});if(!ci)return;
-  var backup=JSON.parse(JSON.stringify(ci));
-  var idx=checkins.findIndex(function(c){return c.id===id;});
-  checkins=checkins.filter(function(c){return c.id!==id;});
-  renderCheckins();persist();
-  toast('打卡已删除',null,{action:'撤销',duration:5000,onAction:function(){checkins.splice(idx,0,backup);renderCheckins();persist();toast('已撤销','ok');}});
+  var ci=checkins.find(function(c){return c.id===id;});
+  var gci=guestCheckins.find(function(c){return c.id===id;});
+  if(ci){
+    var backup=JSON.parse(JSON.stringify(ci));
+    var idx=checkins.findIndex(function(c){return c.id===id;});
+    checkins=checkins.filter(function(c){return c.id!==id;});
+    renderCheckins();persist();
+    toast('打卡已删除',null,{action:'撤销',duration:5000,onAction:function(){checkins.splice(idx,0,backup);renderCheckins();persist();toast('已撤销','ok');}});
+  }else if(gci){
+    var idx=guestCheckins.findIndex(function(c){return c.id===id;});
+    guestCheckins=guestCheckins.filter(function(c){return c.id!==id;});
+    renderCheckins();persistGuestCheckins();
+    toast('打卡已删除','ok');
+  }
 }
 function renderCheckins(){
-  var list=lifeFilter?checkins.filter(function(c){return c.type===lifeFilter;}):checkins;
-  if(!list.length){document.getElementById('checkin-grid').innerHTML='<div class="no-results">☁️ 还没有记录</div>';return;}
+  // 合并博主和访客的打卡，按时间排序
+  var allCheckins=checkins.concat(guestCheckins);
+  var list=lifeFilter?allCheckins.filter(function(c){return c.type===lifeFilter;}):allCheckins;
+  list.sort(function(a,b){return new Date(b.date)-new Date(a.date);});
+  
+  if(!list.length){document.getElementById('checkin-grid').innerHTML='<div class="no-results">☁️ 还没有记录<br><span style="font-size:12px;color:var(--text4)">点击上方按钮分享你的生活</span></div>';return;}
+  
   document.getElementById('checkin-grid').innerHTML=list.map(function(c){
     var tm=typeMap[c.type]||typeMap.mood;
+    var reactions=c.reactions||{};
+    var myReaction=ciReactions[c.id]||null;
+    var isOwner=c.author!=='guest';
+    var canEdit=!isVisitorMode||c.author==='guest'; // 博主可编辑所有，访客只能编辑自己的
+    
     return '<div class="checkin-card type-'+c.type+'">'+
       '<div class="cc-top"><span class="cc-emoji">'+tm.emoji+'</span>'+
-      '<div class="cc-meta"><div class="cc-type" style="color:'+tm.color+'">'+tm.label+'</div>'+
+      '<div class="cc-meta"><div class="cc-type" style="color:'+tm.color+'">'+tm.label+(isOwner?'':' · 访客')+'</div>'+
       '<div class="cc-date">'+c.date+'</div></div>'+
       '<span class="cc-mood">'+c.mood+'</span></div>'+
-      '<div class="cc-actions">'+
+      (canEdit?'<div class="cc-actions">'+
       '<button class="cc-mini-btn" onclick="editCheckin('+c.id+')" data-tip="编辑"><i data-lucide="edit-3" class="icon-sm" style="width:12px;height:12px"></i></button>'+
       '<button class="cc-mini-btn del" onclick="deleteCheckin('+c.id+')" data-tip="删除"><i data-lucide="trash-2" class="icon-sm" style="width:12px;height:12px"></i></button>'+
-      '</div>'+
+      '</div>':'')+
       (c.img?'<img class="cc-img" src="'+c.img+'" onclick="openLightbox(this.src)">':'')+
       '<div class="cc-content">'+escText(c.content)+'</div>'+
       (c.tags.length?'<div class="cc-tags">'+c.tags.map(function(t){return '<span class="cc-tag" style="color:'+tm.color+';border-color:'+tm.color+'40;background:'+tm.color+'14">#'+escText(t)+'</span>';}).join('')+'</div>':'')+
+      '<div class="cc-reactions">'+
+        CI_REACTION_EMOJIS.map(function(e){
+          var cnt=reactions[e]||0;
+          var isActive=myReaction===e;
+          return '<button class="cc-reaction'+(isActive?' active':'')+'" onclick="toggleCiReaction('+c.id+',\''+e+'\')">'+e+(cnt>0?'<span class="cc-reaction-count">'+cnt+'</span>':'')+'</button>';
+        }).join('')+
+        '<button class="cc-reaction" onclick="openCheckinDetail('+c.id+')" data-tip="查看评论"><i data-lucide="message-circle" class="icon-sm" style="width:12px;height:12px"></i></button>'+
+      '</div>'+
       '</div>';
   }).join('');
   refreshIcons();
+}
+
+/* ═══ Checkin Reactions & Comments ═══ */
+function toggleCiReaction(id,emoji){
+  var ci=checkins.find(function(c){return c.id===id;});
+  var gci=guestCheckins.find(function(c){return c.id===id;});
+  var target=ci||gci;
+  if(!target)return;
+  if(!target.reactions)target.reactions={};
+  var myReaction=ciReactions[id];
+  if(myReaction===emoji){
+    // 取消反应
+    target.reactions[emoji]=(target.reactions[emoji]||1)-1;
+    if(target.reactions[emoji]<=0)delete target.reactions[emoji];
+    delete ciReactions[id];
+  } else {
+    // 切换反应
+    if(myReaction){
+      target.reactions[myReaction]=(target.reactions[myReaction]||1)-1;
+      if(target.reactions[myReaction]<=0)delete target.reactions[myReaction];
+    }
+    target.reactions[emoji]=(target.reactions[emoji]||0)+1;
+    ciReactions[id]=emoji;
+  }
+  if(ci)persist();
+  if(gci)persistGuestCheckins();
+  savePrefs();
+  renderCheckins();
+}
+function openCheckinDetail(id){
+  var ci=checkins.find(function(c){return c.id===id;});
+  var gci=guestCheckins.find(function(c){return c.id===id;});
+  var target=ci||gci;
+  if(!target)return;
+  var tm=typeMap[target.type]||typeMap.mood;
+  var reactions=target.reactions||{};
+  var myReaction=ciReactions[target.id]||null;
+  var isOwner=target.author!=='guest';
+  var html='<div class="ci-detail-content">'+
+    '<div class="cc-top" style="margin-bottom:12px"><span class="cc-emoji">'+tm.emoji+'</span>'+
+    '<div class="cc-meta"><div class="cc-type" style="color:'+tm.color+'">'+tm.label+(isOwner?'':' · 访客')+'</div>'+
+    '<div class="cc-date">'+target.date+'</div></div>'+
+    '<span class="cc-mood">'+target.mood+'</span></div>'+
+    (target.img?'<img class="cc-img" src="'+target.img+'" onclick="openLightbox(this.src)" style="margin-bottom:12px">':'')+
+    '<div class="cc-content">'+escText(target.content)+'</div>'+
+    (target.tags.length?'<div class="cc-tags" style="margin-top:12px">'+target.tags.map(function(t){return '<span class="cc-tag" style="color:'+tm.color+';border-color:'+tm.color+'40;background:'+tm.color+'14">#'+escText(t)+'</span>';}).join('')+'</div>':'')+
+  '</div>'+
+  '<div class="ci-detail-reactions">'+
+    CI_REACTION_EMOJIS.map(function(e){
+      var cnt=reactions[e]||0;
+      var isActive=myReaction===e;
+      return '<button class="cc-reaction'+(isActive?' active':'')+'" onclick="toggleCiReaction('+target.id+',\''+e+'\');openCheckinDetail('+target.id+')">'+e+(cnt>0?'<span class="cc-reaction-count">'+cnt+'</span>':'')+'</button>';
+    }).join('')+
+  '</div>'+
+  '<div class="ci-comments" id="ci-giscus"></div>';
+  document.getElementById('ci-detail-body').innerHTML=html;
+  document.getElementById('ci-detail-modal').style.display='flex';
+  refreshIcons();
+  // 加载 Giscus 评论
+  loadCiGiscus(target.id);
+}
+function closeCheckinDetail(){
+  document.getElementById('ci-detail-modal').style.display='none';
+  document.getElementById('ci-giscus').innerHTML='';
+}
+function loadCiGiscus(id){
+  if(!GISCUS_CONFIG.enabled)return;
+  var container=document.getElementById('ci-giscus');
+  var iframe=document.createElement('iframe');
+  iframe.src='https://giscus.app/widget?'+
+    'repo='+encodeURIComponent(GISCUS_CONFIG.repo)+
+    '&repoId='+encodeURIComponent(GISCUS_CONFIG.repoId)+
+    '&category='+encodeURIComponent(GISCUS_CONFIG.category)+
+    '&categoryId='+encodeURIComponent(GISCUS_CONFIG.categoryId)+
+    '&mapping=specific'+
+    '&term=checkin-'+id+
+    '&theme='+(isDark?'dark':'light')+
+    '&reactionsEnabled=0';
+  iframe.setAttribute('loading','lazy');
+  iframe.style.cssText='width:100%;border:none;min-height:200px';
+  container.appendChild(iframe);
 }
 
 /* ═══ Lightbox ═══ */
@@ -2484,6 +2739,18 @@ function openPost(id){
       detail+='</div>';
     }
   }
+  // 添加表情反应区域（所有用户都可以使用）
+  if(!p.draft){
+    var reactions=p.reactions||{};
+    var myReaction=postReactions[p.id]||null;
+    detail+='<div class="post-reactions"><span class="post-reactions-label">这篇文章对你有帮助吗？</span>'+
+      POST_REACTION_EMOJIS.map(function(e){
+        var cnt=reactions[e]||0;
+        var isActive=myReaction===e;
+        return '<button class="post-reaction'+(isActive?' active':'')+'" onclick="togglePostReaction('+p.id+',\''+e+'\')">'+e+(cnt>0?'<span class="post-reaction-count">'+cnt+'</span>':'')+'</button>';
+      }).join('')+
+    '</div>';
+  }
   // 添加评论区域
   if(GISCUS_CONFIG.enabled&&!p.draft){
     detail+='<div class="comments-section"><div class="comments-title"><i data-lucide="message-circle"></i>评论</div><div class="giscus-container" id="giscus-container"></div></div>';
@@ -2525,6 +2792,31 @@ function loadGiscus(containerId){
   script.async=true;
   container.innerHTML='';
   container.appendChild(script);
+}
+
+/* ═══ Post Reactions ═══ */
+function togglePostReaction(id,emoji){
+  var p=posts.find(function(x){return x.id===id;});
+  if(!p)return;
+  if(!p.reactions)p.reactions={};
+  var myReaction=postReactions[id];
+  if(myReaction===emoji){
+    // 取消反应
+    p.reactions[emoji]=(p.reactions[emoji]||1)-1;
+    if(p.reactions[emoji]<=0)delete p.reactions[emoji];
+    delete postReactions[id];
+  } else {
+    // 切换反应
+    if(myReaction){
+      p.reactions[myReaction]=(p.reactions[myReaction]||1)-1;
+      if(p.reactions[myReaction]<=0)delete p.reactions[myReaction];
+    }
+    p.reactions[emoji]=(p.reactions[emoji]||0)+1;
+    postReactions[id]=emoji;
+  }
+  persist();
+  savePrefs();
+  openPost(id); // 刷新文章页面
 }
 
 /* ═══ BLOCK EDITOR ═══ */
@@ -3358,7 +3650,22 @@ window.addEventListener('load',async function(){
   updateSeriesSelect();renderTagBar();refreshHome();
   document.getElementById('cmd-input').addEventListener('input',function(){cmdFocus=0;renderCmdResults();});
   setupDragDrop();
+  // 版本检测
+  checkVersion();
 });
+
+// ═══ 版本检测 ═══
+function checkVersion(){
+  try{
+    var savedVer=localStorage.getItem('app_version');
+    if(savedVer&&savedVer!==APP_VERSION){
+      // 版本不同，显示更新提示
+      document.getElementById('update-bar').classList.add('show');
+    }
+    // 保存当前版本
+    localStorage.setItem('app_version',APP_VERSION);
+  }catch(e){}
+}
 // ========== 缓存清理 & 强制刷新 ==========
 function clearAppCache() {
   var cleared = [];
