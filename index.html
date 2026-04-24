@@ -150,6 +150,11 @@ body:not(.visitor) .visitor-only{display:none!important}
 .cmd-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 .kbd{display:inline-flex;align-items:center;gap:2px;padding:1px 5px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text3)}
 .icon-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .2s cubic-bezier(.4,0,.2,1)}
+.refresh-btn.hint{border-color:#6366f1;color:#6366f1;animation:refreshPulse 1.8s ease-in-out infinite}
+.refresh-btn.hint::after{content:'';position:absolute;inset:-4px;border-radius:12px;border:2px solid #6366f1;opacity:.5;animation:refreshRing 1.8s ease-out infinite;pointer-events:none}
+.refresh-btn{position:relative}
+@keyframes refreshPulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.4)}50%{box-shadow:0 0 0 6px rgba(99,102,241,0)}}
+@keyframes refreshRing{0%{transform:scale(.9);opacity:.6}100%{transform:scale(1.35);opacity:0}}
 .icon-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border2);transform:translateY(-1px)}
 .icon-btn.mode-indicator{color:var(--accent);border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(91,91,214,0.1)}
 .cta-btn{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:500;transition:all .2s cubic-bezier(.4,0,.2,1);border:none;box-shadow:0 2px 8px rgba(91,91,214,0.3)}
@@ -898,7 +903,7 @@ body.immersive #immersive-exit{display:inline-flex}
     <button onclick="goNav('about',this)" data-tip="关于博主"><i data-lucide="user" class="icon-sm"></i>关于</button>
   </div>
   <div class="nav-r">
-    <button class="icon-btn" onclick="forceRefresh()" data-tip="刷新页面(出现异常点一下)"><i data-lucide="refresh-cw" class="icon-sm"></i></button>
+    <button class="icon-btn refresh-btn" id="refresh-btn" onclick="forceRefresh()" data-tip="刷新获取最新版本 / 文章 / 评论"><i data-lucide="refresh-cw" class="icon-sm"></i></button>
     <button class="cmd-btn" onclick="openCmd()" data-tip="搜索 & 命令面板"><i data-lucide="search" class="icon-sm"></i>搜索<span class="kbd" id="cmd-kbd">⌘K</span></button>
     <button class="cta-btn admin-only" onclick="goNav('write')" data-tip="开始写作"><i data-lucide="pencil" class="icon-sm"></i>写作<span class="kbd" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8)">N</span></button>
     <button class="icon-btn admin-only" id="draft-btn" onclick="openDraftModal()" data-tip="草稿仓库" style="display:none"><i data-lucide="file-text" class="icon-sm"></i><span id="draft-badge" style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;padding:1px 5px;border-radius:99px;font-weight:600"></span></button>
@@ -4222,7 +4227,8 @@ function _nav(id,el){
   document.querySelectorAll('.pi.kb-focus').forEach(function(p){p.classList.remove('kb-focus');});
   // 离开非实验室页面时停止特效
   if(id!=='lab'){stopLabEffect();stopLabPreview();}
-  if(id==='home'){renderTagBar();refreshHome();}
+  if(id==='home'){renderTagBar();refreshHome();hintRefreshOnHome();}
+  else{clearRefreshHint();}
   if(id==='life')renderCheckins();
   if(id==='tags')renderTags();
   if(id==='series')renderSeries();
@@ -4355,6 +4361,7 @@ window.addEventListener('load',async function(){
   refreshIcons();
   await loadStorage();
   updateSeriesSelect();renderTagBar();refreshHome();
+  setTimeout(hintRefreshOnHome,800);
   document.getElementById('cmd-input').addEventListener('input',function(){cmdFocus=0;renderCmdResults();});
   setupDragDrop();
   // 版本检测
@@ -4433,8 +4440,28 @@ function clearAppCache() {
 }
 
 function forceRefresh() {
-  // 只刷新页面，不清除任何缓存数据
-  location.reload();
+  // 强刷：加 URL 缓存破坏参数，确保 HTML/静态资源走服务器
+  try{
+    var u=new URL(location.href);
+    u.searchParams.set('_t',Date.now());
+    location.replace(u.toString());
+  }catch(e){
+    location.reload();
+  }
+}
+
+// 进入首页时高亮刷新按钮并提示
+function hintRefreshOnHome(){
+  var btn=document.getElementById('refresh-btn');
+  if(!btn)return;
+  btn.classList.add('hint');
+  try{toast('🔄 点这里刷新 · 获取新版本 / 新文章 / 新评论','info',{duration:2600});}catch(e){}
+  // 10 秒后自动移除高亮，避免长期晃眼
+  setTimeout(function(){if(btn)btn.classList.remove('hint');},10000);
+}
+function clearRefreshHint(){
+  var btn=document.getElementById('refresh-btn');
+  if(btn)btn.classList.remove('hint');
 }
 
 // 确保函数暴露在全局
